@@ -1,0 +1,19 @@
+#!/bin/bash
+set -o errexit -o pipefail -o nounset
+
+args=()
+
+[[ !  -e /etc/sysconfig/etcd ]] || . /etc/sysconfig/etcd
+
+[[  -f ${name} ]] || args+=( --name "$name" )
+[[  -f ${advertise_peer_urls} ]] || args+=( --initial-advertise-peer-urls "$advertise_peer_urls" )
+[[  -f ${listen_peer_urls} ]] || args+=( --listen-peer-urls "$listen_peer_urls" )
+[[  -f ${listen_client_urls} ]] || args+=( --listen-client-urls "$listen_client_urls" )
+[[  -f ${advertise_client_urls} ]] || args+=( --advertise-client-urls "$advertise_client_urls" )
+[[  -f ${token} ]] || args+=( --initial-cluster-token "$token" )
+[[  -f ${cluster} ]] || args+=( --initial-cluster "$cluster" )
+[[  -f ${state} ]] || args+=( --initial-cluster-state "$state" )
+
+#echo "${args[@]}"
+
+/usr/local/bin/etcd "${args[@]:-}"

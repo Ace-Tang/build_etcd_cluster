@@ -1,0 +1,12 @@
+[Unit]
+Description=Etcd Cluster Service
+Wants=network.target
+After=network.target
+
+[Service]
+EnvironmentFile=-/etc/sysconfig/etcd
+ExecStart=/usr/local/bin/etcd_init_warpper 
+
+
+[Install]
+WantedBy=multi-user.target
